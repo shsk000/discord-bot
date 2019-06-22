@@ -1,6 +1,5 @@
-const argv = require('yargs').argv
-const API_KEY = argv.googleApiKey;
-const CSE_ID = argv.googleCSEId;
+const API_KEY = process.env.GOOGLE_API_KEY;
+const CSE_ID = process.env.GOOGLE_CSE_ID;
 
 const {
     google

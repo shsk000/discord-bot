@@ -1,4 +1,3 @@
-const argv = require('yargs').argv
 const Discord = require("discord.js");
 const customSearch = require("./customSearch");
 const client = new Discord.Client();
@@ -20,4 +19,4 @@ client.on("message", async message => {
     message.reply(result.data.items[0].link);
 });
 
-client.login(argv.discordToken)
+client.login(process.env.DISCORD_TOKEN)
