@@ -7,16 +7,20 @@ client.on("ready", () => {
 });
 
 client.on("message", async message => {
-    const user = message.mentions.users.first();
-
-    if (message.author.bot || !user || user.username !== "bot-test") {
-        return;
+    try {
+        const user = message.mentions.users.first();
+    
+        if (message.author.bot || !user || user.username !== "bot-test") {
+            return;
+        }
+    
+        const text = message.content.replace(/^<@!?\d+>/, "");
+    
+        const result = await customSearch(text);
+        message.reply(result.data.items[0].link);
+    } catch(e) {
+        console.log(e);
     }
-
-    const text = message.content.replace(/^<@!?\d+>/, "");
-
-    const result = await customSearch(text);
-    message.reply(result.data.items[0].link);
 });
 
 client.login(process.env.DISCORD_TOKEN)
