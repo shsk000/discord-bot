@@ -9,7 +9,7 @@ const customSearch = google.customsearch('v1');
 const searchNum = 1;
 
 module.exports = async (q) => {
-    const start = Math.floor(Math.random() * 100);
+    const start = Math.floor(Math.random() * 20);
     return await customSearch.cse.list({
         cx: CSE_ID,
         q,
