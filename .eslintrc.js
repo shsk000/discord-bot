@@ -3,8 +3,12 @@ module.exports = {
       "eslint:recommended", // お好きなESLint設定をここに
       "plugin:prettier/recommended"
     ],
+    "env": {
+      "jest/globals": true,
+    },
     "plugins": [
-      "@typescript-eslint"
+      "@typescript-eslint",
+      "jest"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {

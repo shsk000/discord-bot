@@ -3,6 +3,10 @@ import { injectable } from "inversify";
 
 const customSearch = google.customsearch("v1");
 
+export interface IGoogleCustomSearch {
+  search(q: string, start: number): Promise<any>;
+}
+
 declare var process: {
   env: {
     NODE_ENV: string;
@@ -11,19 +15,12 @@ declare var process: {
   };
 };
 
-export interface IGoogleCustomSearch {
-  search: (q: string) => Promise<any>;
-}
-
 @injectable()
-export default class GoogleCustomSearch implements IGoogleCustomSearch {
+class GoogleCustomSearch implements IGoogleCustomSearch {
   static readonly API_KEY = process.env.GOOGLE_API_KEY;
   static readonly CSE_ID = process.env.GOOGLE_CSE_ID;
 
-  constructor() {}
-
-  public async search(q: string) {
-    const start = Math.floor(Math.random() * 20);
+  public async search(q: string, start: number): Promise<any> {
     return await customSearch.cse.list({
       cx: GoogleCustomSearch.CSE_ID,
       q,
@@ -35,3 +32,5 @@ export default class GoogleCustomSearch implements IGoogleCustomSearch {
     });
   }
 }
+
+export default GoogleCustomSearch;

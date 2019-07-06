@@ -1,7 +1,4 @@
-// import GoogleCustomSearch, {
-//   IGoogleCustomSearch
-// } from "../Services/GoogleCustomSearch";
-import { IGoogleCustomSearch } from "../Services/GoogleCustomSearch";
+import { ICustomSearch } from "../Services/CustomSearch";
 import { inject, injectable } from "inversify";
 
 export interface ISearchImages {
@@ -10,9 +7,9 @@ export interface ISearchImages {
 
 @injectable()
 export default class SearchImages implements ISearchImages {
-  private readonly service: IGoogleCustomSearch;
+  private readonly service: ICustomSearch;
 
-  constructor(@inject("IGoogleCustomSearch") service: IGoogleCustomSearch) {
+  constructor(@inject("ICustomSearch") service: ICustomSearch) {
     this.service = service;
   }
 
