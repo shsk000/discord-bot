@@ -5,13 +5,16 @@ import { Container } from "inversify";
 import DiscordMessage, { IDiscordMessage } from "../Entities/Message";
 
 // service
-import GoogleCustomSearch, {
-  IGoogleCustomSearch
-} from "../Services/GoogleCustomSearch";
+import CustomSearch, { ICustomSearch } from "../Services/CustomSearch";
 
 // usecase
 import SearchImages, { ISearchImages } from "../Usecases/SearchImages";
 import MessageParse, { IMessageParse } from "../Usecases/MessageParse";
+
+// repository
+import GoogleCustomSearch, {
+  IGoogleCustomSearch
+} from "../Repositories/GoogleCustomSearch";
 
 const myContainer = new Container();
 
@@ -19,12 +22,15 @@ const myContainer = new Container();
 myContainer.bind<IDiscordMessage>("IDiscordMessage").to(DiscordMessage);
 
 // bind service
-myContainer
-  .bind<IGoogleCustomSearch>("IGoogleCustomSearch")
-  .to(GoogleCustomSearch);
+myContainer.bind<ICustomSearch>("ICustomSearch").to(CustomSearch);
 
 // bind usecase
 myContainer.bind<ISearchImages>("ISearchImages").to(SearchImages);
 myContainer.bind<IMessageParse>("IMessageParse").to(MessageParse);
+
+// bind repository
+myContainer
+  .bind<IGoogleCustomSearch>("IGoogleCustomSearch")
+  .to(GoogleCustomSearch);
 
 export default myContainer;
