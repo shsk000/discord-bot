@@ -1,21 +1,29 @@
 import { Message } from "discord.js";
-import DiscordMessage, { IDiscordMessage } from "../Entities/Message";
+import { IDiscordMessage } from "../Entities/Message";
+import { inject, injectable } from "inversify";
 
-interface IParsedMessage {
+export interface IMessageParse {
+  parsedMessage(m: Message): ParsedMessage;
+}
+
+type ParsedMessage = {
   mensionTarget: string;
   command: string;
   messageText: string;
   isInvalidBotOrder: boolean;
-}
+};
 
-export default class MessageParse {
+@injectable()
+export default class MessageParse implements IMessageParse {
   private discordMessage: IDiscordMessage;
 
-  constructor(m: Message) {
-    this.discordMessage = new DiscordMessage(m);
+  constructor(@inject("IDiscordMessage") discordMessage: IDiscordMessage) {
+    this.discordMessage = discordMessage;
   }
 
-  public parsedMessage(): IParsedMessage {
+  public parsedMessage(m: Message): ParsedMessage {
+    this.discordMessage.parse(m);
+
     const mensionTarget = this.discordMessage.getMensitionTarget();
     const command = this.discordMessage.getCommand();
     const messageText = this.discordMessage.getMessageText();

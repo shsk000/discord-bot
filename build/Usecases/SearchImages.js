@@ -13,28 +13,18 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
-let MessageParse = class MessageParse {
-    constructor(discordMessage) {
-        this.discordMessage = discordMessage;
+let SearchImages = class SearchImages {
+    constructor(service) {
+        this.service = service;
     }
-    parsedMessage(m) {
-        this.discordMessage.parse(m);
-        const mensionTarget = this.discordMessage.getMensitionTarget();
-        const command = this.discordMessage.getCommand();
-        const messageText = this.discordMessage.getMessageText();
-        const isInvalidBotOrder = this.discordMessage.isInvalidBotOrder();
-        return {
-            mensionTarget,
-            command,
-            messageText,
-            isInvalidBotOrder
-        };
+    async search(q) {
+        return await this.service.search(q);
     }
 };
-MessageParse = __decorate([
+SearchImages = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject("IDiscordMessage")),
+    __param(0, inversify_1.inject("IGoogleCustomSearch")),
     __metadata("design:paramtypes", [Object])
-], MessageParse);
-exports.default = MessageParse;
-//# sourceMappingURL=MessageParse.js.map
+], SearchImages);
+exports.default = SearchImages;
+//# sourceMappingURL=SearchImages.js.map

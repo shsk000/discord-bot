@@ -1,33 +1,32 @@
 import { Message } from "discord.js";
+import { injectable } from "inversify";
 
 export interface IDiscordMessage {
+  parse(m: Message): void;
   getMensitionTarget(): string;
   getCommand(): string;
   getMessageText(): string;
   isInvalidBotOrder(): boolean;
 }
 
+@injectable()
 class DiscordMessage implements IDiscordMessage {
-  private m: Message;
   private mensionTarget: string;
   private command: string;
   private messageText: string;
 
-  constructor(m: Message) {
-    this.m = m;
+  constructor() {
     this.mensionTarget = "";
     this.command = "";
     this.messageText = "";
-
-    this.parse();
   }
 
-  private parse(): void {
-    const parsed = this.m.content.match(/^(<@!?\d+>)\s?([^\s]*)\s?(.*)?/);
+  public parse(m: Message): void {
+    const parsed = m.content.match(/^(<@!?\d+>)\s?([^\s]*)\s?(.*)?/);
 
     if (!parsed || !(parsed instanceof Array)) return;
 
-    this.mensionTarget = this.m.mentions.users.first().username;
+    this.mensionTarget = m.mentions.users.first().username;
     this.command = parsed[2] || "";
     this.messageText = parsed[3] || "";
   }
