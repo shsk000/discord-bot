@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/shsk000/discord-bot#readme",
   "dependencies": {
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.0.12",
     "discord.js": "^11.5.1",
     "googleapis": "^40.0.0",
     "inversify": "^5.0.1",
@@ -27,8 +29,6 @@
     "yargs": "^13.2.4"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.15",
-    "@types/node": "^12.0.12",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
     "eslint": "^6.0.1",
