@@ -7,7 +7,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "tsc": "tsc --locale ja",
-    "start": "npm run tsc && node ./build/app.js"
+    "start": "node ./build/app.js"
   },
   "repository": {
     "type": "git",
@@ -25,9 +25,11 @@
     "discord.js": "^11.5.1",
     "googleapis": "^40.0.0",
     "inversify": "^5.0.1",
+    "node-opus": "^0.3.3",
     "reflect-metadata": "^0.1.13",
     "typescript": "^3.5.2",
-    "yargs": "^13.2.4"
+    "yargs": "^13.2.4",
+    "ytdl-core": "^1.0.7"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^1.11.0",
