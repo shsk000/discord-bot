@@ -23,7 +23,8 @@ allPrivateUsers.set(
     audio: {
       joinedVoiceChannelAudioType: "file",
       audioFile: new AudioFile({
-        fileName: "ksk.mp3"
+        fileName: "gmks.mp3",
+        volume: 0.5
       })
     }
   })
@@ -36,7 +37,8 @@ allPrivateUsers.set(
     audio: {
       joinedVoiceChannelAudioType: "file",
       audioFile: new AudioFile({
-        fileName: "ksk.mp3"
+        fileName: "ksk.mp3",
+        volume: 0.5
       })
     }
   })

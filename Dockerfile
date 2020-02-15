@@ -17,4 +17,4 @@ RUN npm install
 COPY --chown=node ./src /app/src
 RUN npm run tsc
 
-CMD ["npm", "run", "start:prd"]
+CMD ["npm", "run", "start"]

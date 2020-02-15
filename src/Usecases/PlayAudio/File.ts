@@ -1,8 +1,7 @@
-
 import { createReadStream } from "fs";
 import { VoiceConnection } from "discord.js";
 import { injectable } from "inversify";
-import { AudioFile } from '../../Entities/AudioFile';
+import { AudioFile } from "../../Entities/AudioFile";
 
 export interface IPlayAudioFileUsecase {
   play: (connection: VoiceConnection, audio: AudioFile) => void;
@@ -17,7 +16,9 @@ export class PlayAudioFileUsecase implements IPlayAudioFileUsecase {
       autoClose: true
     });
 
-    const dispatcher = connection.playStream(stream);
+    const dispatcher = connection.playStream(stream, {
+      volume: audio.getVolume()
+    });
 
     dispatcher.on("end", () => {
       stream.destroy();

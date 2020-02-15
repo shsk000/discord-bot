@@ -3,19 +3,31 @@ import { join } from "path";
 
 interface IAudioFile {
   isExistFile(): boolean;
+  getFileFullPath(): string;
+  getVolume(): number;
 }
 
 interface IAudioFileConstructorParams {
   fileName: string;
+  volume?: number;
 }
 
 const rootDataFilePath = join(__dirname, "../../../src/data");
 
 export class AudioFile implements IAudioFile {
   private fileName: string;
+  private volume: number = 1;
 
   public constructor(params: IAudioFileConstructorParams) {
     this.fileName = params.fileName;
+
+    if (params.volume) {
+      this.volume = params.volume;
+    }
+  }
+
+  public getVolume(): number {
+    return this.volume;
   }
 
   public getFileFullPath(): string {
