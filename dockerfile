@@ -17,6 +17,4 @@ RUN npm install
 COPY --chown=node ./src /app/src
 RUN npm run tsc
 
-# build完了後に/dist内にアプリのjavascriptファイルがあるので、それをnodeコマンドで実行しています。
-# javascriptファイルを、サーバーで起動するにはnodeコマンドを使います。
-# CMD ["node", "dist/[アプリの起動ファイル名].js"]
+CMD ["npm", "run", "start:prd"]
