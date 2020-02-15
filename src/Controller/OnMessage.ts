@@ -1,16 +1,11 @@
-import { Client, Message } from "discord.js";
+import { Message } from "discord.js";
 import { IMessageParse } from "../Usecases/MessageParse";
 import { ISearchImages } from "../Usecases/SearchImages";
 
 import container from "../lib/inversify.config";
+import { AbstractOnController } from ".";
 
-export default class OnMessage {
-  private client: Client;
-
-  constructor(client: Client) {
-    this.client = client;
-  }
-
+export class OnMessage extends AbstractOnController {
   triggerEventListener(): void {
     this.client.on("message", async (m: Message) => {
       try {

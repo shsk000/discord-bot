@@ -6,7 +6,7 @@ export interface ISearchImages {
 }
 
 @injectable()
-export default class SearchImages implements ISearchImages {
+export class SearchImages implements ISearchImages {
   private readonly service: ICustomSearch;
 
   constructor(@inject("ICustomSearch") service: ICustomSearch) {

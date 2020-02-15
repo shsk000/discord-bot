@@ -2,14 +2,15 @@ import "reflect-metadata";
 import { Container } from "inversify";
 
 // entity
-import DiscordMessage, { IDiscordMessage } from "../Entities/Message";
+import DiscordMessage, { IDiscordMessage } from "../Entities/DiscordMessage";
 
 // service
 import CustomSearch, { ICustomSearch } from "../Services/CustomSearch";
 
 // usecase
-import SearchImages, { ISearchImages } from "../Usecases/SearchImages";
-import MessageParse, { IMessageParse } from "../Usecases/MessageParse";
+import { SearchImages, ISearchImages } from "../Usecases/SearchImages";
+import { MessageParse, IMessageParse } from "../Usecases/MessageParse";
+import { IPlayAudioFile, PlayAudioFile } from "../Usecases/PlayAudio/file";
 
 // repository
 import GoogleCustomSearch, {
@@ -27,6 +28,7 @@ myContainer.bind<ICustomSearch>("ICustomSearch").to(CustomSearch);
 // bind usecase
 myContainer.bind<ISearchImages>("ISearchImages").to(SearchImages);
 myContainer.bind<IMessageParse>("IMessageParse").to(MessageParse);
+myContainer.bind<IPlayAudioFile>("IPlayAudioFile").to(PlayAudioFile);
 
 // bind repository
 myContainer
