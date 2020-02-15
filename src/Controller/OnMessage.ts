@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
-import { IMessageParseUsecase } from "../Usecases/MessageParseUsecase";
-import { ISearchImagesUsecase } from "../Usecases/SearchImagesUsecase";
+import { IMessageParseUsecase } from "../Usecases/MessageParse";
+import { ISearchImagesUsecase } from "../Usecases/SearchImages";
 
 import container from "../lib/inversify.config";
 import { AbstractOnController } from ".";

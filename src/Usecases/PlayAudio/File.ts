@@ -1,17 +1,19 @@
-import path from "path";
+
 import { createReadStream } from "fs";
 import { VoiceConnection } from "discord.js";
 import { injectable } from "inversify";
+import { AudioFile } from '../../Entities/AudioFile';
 
 export interface IPlayAudioFileUsecase {
-  play: (connection: VoiceConnection, filePath: string) => void;
+  play: (connection: VoiceConnection, audio: AudioFile) => void;
 }
 
 @injectable()
 export class PlayAudioFileUsecase implements IPlayAudioFileUsecase {
-  public play(connection: VoiceConnection, filePath: string) {
-    const filepath = path.join(__dirname, filePath);
-    const stream = createReadStream(filepath, {
+  public play(connection: VoiceConnection, audio: AudioFile) {
+    if (!audio.isExistFile()) return;
+
+    const stream = createReadStream(audio.getFileFullPath(), {
       autoClose: true
     });
 
