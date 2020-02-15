@@ -2,7 +2,7 @@ import { Message } from "discord.js";
 import { IDiscordMessage } from "../Entities/DiscordMessage";
 import { inject, injectable } from "inversify";
 
-export interface IMessageParse {
+export interface IMessageParseUsecase {
   parsedMessage(m: Message): ParsedMessage;
 }
 
@@ -14,7 +14,7 @@ type ParsedMessage = {
 };
 
 @injectable()
-export class MessageParse implements IMessageParse {
+export class MessageParseUsecase implements IMessageParseUsecase {
   private discordMessage: IDiscordMessage;
 
   constructor(@inject("IDiscordMessage") discordMessage: IDiscordMessage) {

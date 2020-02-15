@@ -8,9 +8,18 @@ import DiscordMessage, { IDiscordMessage } from "../Entities/DiscordMessage";
 import CustomSearch, { ICustomSearch } from "../Services/CustomSearch";
 
 // usecase
-import { SearchImages, ISearchImages } from "../Usecases/SearchImages";
-import { MessageParse, IMessageParse } from "../Usecases/MessageParse";
-import { IPlayAudioFile, PlayAudioFile } from "../Usecases/PlayAudio/file";
+import {
+  SearchImagesUsecase,
+  ISearchImagesUsecase
+} from "../Usecases/SearchImagesUsecase";
+import {
+  MessageParseUsecase,
+  IMessageParseUsecase
+} from "../Usecases/MessageParseUsecase";
+import {
+  IPlayAudioFileUsecase,
+  PlayAudioFileUsecase
+} from "../Usecases/PlayAudio/File";
 
 // repository
 import GoogleCustomSearch, {
@@ -26,9 +35,15 @@ myContainer.bind<IDiscordMessage>("IDiscordMessage").to(DiscordMessage);
 myContainer.bind<ICustomSearch>("ICustomSearch").to(CustomSearch);
 
 // bind usecase
-myContainer.bind<ISearchImages>("ISearchImages").to(SearchImages);
-myContainer.bind<IMessageParse>("IMessageParse").to(MessageParse);
-myContainer.bind<IPlayAudioFile>("IPlayAudioFile").to(PlayAudioFile);
+myContainer
+  .bind<ISearchImagesUsecase>("ISearchImagesUsecase")
+  .to(SearchImagesUsecase);
+myContainer
+  .bind<IMessageParseUsecase>("IMessageParseUsecase")
+  .to(MessageParseUsecase);
+myContainer
+  .bind<IPlayAudioFileUsecase>("IPlayAudioFileUsecase")
+  .to(PlayAudioFileUsecase);
 
 // bind repository
 myContainer
