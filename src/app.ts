@@ -1,4 +1,5 @@
 import Discord from "discord.js";
+// import ytdl from "ytdl-core";
 
 declare const process: {
   env: {
@@ -7,7 +8,8 @@ declare const process: {
   };
 };
 
-import OnMessage from "./Controller/OnMessage";
+import { OnMessage } from "./Controller/OnMessage";
+import { OnVoiceStateUpdate } from "./Controller/OnVoiceStateUpdate";
 
 const client = new Discord.Client();
 
@@ -18,5 +20,8 @@ client.on("ready", () => {
 
 const onMessage = new OnMessage(client);
 onMessage.triggerEventListener();
+
+const onVoiceStateUpdate = new OnVoiceStateUpdate(client);
+onVoiceStateUpdate.triggerEventListener();
 
 client.login(process.env.DISCORD_TOKEN);

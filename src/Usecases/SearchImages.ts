@@ -1,12 +1,12 @@
 import { ICustomSearch } from "../Services/CustomSearch";
 import { inject, injectable } from "inversify";
 
-export interface ISearchImages {
+export interface ISearchImagesUsecase {
   search(q: string): Promise<any>;
 }
 
 @injectable()
-export default class SearchImages implements ISearchImages {
+export class SearchImagesUsecase implements ISearchImagesUsecase {
   private readonly service: ICustomSearch;
 
   constructor(@inject("ICustomSearch") service: ICustomSearch) {
