@@ -1,8 +1,12 @@
-FROM node:12.16.0
+FROM node:12.16.0-slim
 
 RUN apt update
 RUN apt -y upgrade
+RUN apt install -y python
 RUN apt install -y ffmpeg
+RUN apt install -y make
+RUN apt install -y gcc
+RUN apt install -y g++
 
 USER node
 

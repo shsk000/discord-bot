@@ -6,4 +6,5 @@ services:
         volumes: 
             - ./src:/app/src
             - ./shell:/app/shell
+        command: bash -c "/app/shell/start.sh start"
         tty: true
