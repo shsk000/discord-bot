@@ -11,11 +11,11 @@ import CustomSearch, { ICustomSearch } from "../Services/CustomSearch";
 import {
   SearchImagesUsecase,
   ISearchImagesUsecase
-} from "../Usecases/SearchImagesUsecase";
+} from "../Usecases/SearchImages";
 import {
   MessageParseUsecase,
   IMessageParseUsecase
-} from "../Usecases/MessageParseUsecase";
+} from "../Usecases/MessageParse";
 import {
   IPlayAudioFileUsecase,
   PlayAudioFileUsecase
