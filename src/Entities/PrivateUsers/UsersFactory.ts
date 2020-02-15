@@ -30,16 +30,16 @@ allPrivateUsers.set(
   })
 );
 
-allPrivateUsers.set(
-  "351377450007003136",
-  new PrivateUser({
-    userId: "351362773407498241",
-    audio: {
-      joinedVoiceChannelAudioType: "file",
-      audioFile: new AudioFile({
-        fileName: "ksk.mp3",
-        volume: 0.5
-      })
-    }
-  })
-);
+// allPrivateUsers.set(
+//   "351377450007003136",
+//   new PrivateUser({
+//     userId: "351362773407498241",
+//     audio: {
+//       joinedVoiceChannelAudioType: "file",
+//       audioFile: new AudioFile({
+//         fileName: "ksk.mp3",
+//         volume: 0.5
+//       })
+//     }
+//   })
+// );
