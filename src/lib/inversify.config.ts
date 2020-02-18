@@ -3,6 +3,10 @@ import { Container } from "inversify";
 
 // entity
 import DiscordMessage, { IDiscordMessage } from "../Entities/DiscordMessage";
+import {
+  UserFactoryCreater,
+  IUserFactoryCreater
+} from "../Entities/PrivateUsers/UserFactoryCreater";
 
 // service
 import CustomSearch, { ICustomSearch } from "../Services/CustomSearch";
@@ -30,6 +34,9 @@ const myContainer = new Container();
 
 // bind entity
 myContainer.bind<IDiscordMessage>("IDiscordMessage").to(DiscordMessage);
+myContainer
+  .bind<IUserFactoryCreater>("IUserFactoryCreater")
+  .to(UserFactoryCreater);
 
 // bind service
 myContainer.bind<ICustomSearch>("ICustomSearch").to(CustomSearch);
