@@ -3,7 +3,6 @@ import { VoiceChannel } from "discord.js";
 import { AbstractOnController } from ".";
 import { IPlayAudioFileUsecase } from "../Usecases/PlayAudio/File";
 import container from "../lib/inversify.config";
-import { allPrivateUsers } from "../Entities/PrivateUsers/UsersFactory";
 
 export class OnVoiceStateUpdate extends AbstractOnController {
   public triggerEventListener(): void {
@@ -22,19 +21,7 @@ export class OnVoiceStateUpdate extends AbstractOnController {
       if (!(channel instanceof VoiceChannel)) return;
 
       try {
-        const privateUser = allPrivateUsers.get(oldMember.user.id);
-
-        if (!privateUser) return;
-
-        const audio = privateUser.getAudio();
-
-        if (!audio) return;
-
-        const connection = await channel.join();
-
-        if (audio.joinedVoiceChannelAudioType === "file") {
-          playAudioFileUsecase.play(connection, audio.audioFile);
-        }
+        playAudioFileUsecase.play(channel, oldMember.user.id);
       } catch (e) {
         console.log(e);
       }

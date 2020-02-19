@@ -1,45 +1,39 @@
-import { PrivateUser } from "./PrivateUser";
-import { AudioFile } from "../AudioFile";
+import { AdminUser } from "./AdminUser";
+import { User } from "./User";
 
-export const allPrivateUsers = new Map<string, PrivateUser>();
+type UserType = User | AdminUser;
 
-allPrivateUsers.set(
-  "272883674842660864",
-  new PrivateUser({
-    userId: "272883674842660864",
-    audio: {
-      joinedVoiceChannelAudioType: "file",
-      audioFile: new AudioFile({
-        fileName: "ksk.mp3"
-      })
-    }
-  })
-);
+type UserListBase = {
+  [key: string]: UserType;
+};
 
-allPrivateUsers.set(
-  "351362773407498241",
-  new PrivateUser({
-    userId: "351362773407498241",
-    audio: {
-      joinedVoiceChannelAudioType: "file",
-      audioFile: new AudioFile({
-        fileName: "gmks.mp3",
-        volume: 0.5
-      })
-    }
-  })
-);
+export class UserFactory<
+  UserList extends UserListBase,
+  UserId extends keyof UserList
+> {
+  public readonly list: Map<string, UserType> = new Map();
 
-// allPrivateUsers.set(
-//   "351377450007003136",
-//   new PrivateUser({
-//     userId: "351362773407498241",
-//     audio: {
-//       joinedVoiceChannelAudioType: "file",
-//       audioFile: new AudioFile({
-//         fileName: "ksk.mp3",
-//         volume: 0.5
-//       })
-//     }
-//   })
-// );
+  public setUser(userId: UserId, user: UserList[UserId]) {
+    this.list.set(userId as string, user);
+  }
+
+  public getUser(userId: string): UserType | undefined {
+    return this.list.get(userId);
+  }
+
+  private isAdmin(user: UserType | undefined): user is AdminUser {
+    return user instanceof AdminUser;
+  }
+
+  public getAdminUser(): AdminUser[] {
+    const tmp: AdminUser[] = [];
+
+    this.list.forEach(user => {
+      if (this.isAdmin(user)) {
+        tmp.push(user);
+      }
+    });
+
+    return tmp;
+  }
+}

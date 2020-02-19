@@ -7,8 +7,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "tsc": "tsc --locale ja",
-    "start": "npm run tsc && node ./build/app.js",
-    "start:prd": "node ./build/app.js"
+    "start": "npm run tsc && NODE_ENV=development node ./build/app.js",
+    "start:prd": "NODE_ENV=production node ./build/app.js"
   },
   "repository": {
     "type": "git",
