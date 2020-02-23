@@ -12,14 +12,7 @@ export class OnVoiceStateUpdate extends AbstractOnController {
 
     this.client.on("voiceStateUpdate", async (oldMember, newMember) => {
       if (oldMember.user.bot || newMember.user.bot) return;
-      // do not execute to change mute
-      if (oldMember.mute || newMember.mute) return;
-      // do not execute to change go live
-      if (
-        oldMember.voiceChannelID !== null &&
-        newMember.voiceChannelID !== null
-      )
-        return;
+      if (!!oldMember.voiceChannel && !!newMember.voiceChannel) return;
 
       const channelId = newMember.voiceChannelID;
       const channel = this.client.channels.get(channelId);
