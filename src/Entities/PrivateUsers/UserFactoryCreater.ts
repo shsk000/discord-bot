@@ -7,6 +7,8 @@ import { injectable } from "inversify";
 type PrivateUsers = {
   "272883674842660864": User;
   "351362773407498241": User;
+  // debugUser
+  // "351377450007003136": User;
 };
 
 type PrivateUserId = keyof PrivateUsers;
@@ -47,20 +49,20 @@ export class UserFactoryCreater implements IUserFactoryCreater {
       })
     );
 
+    // factory.setUser(
+    //   "351377450007003136",
+    //   new User({
+    //     userId: "351362773407498241",
+    //     audio: {
+    //       joinedVoiceChannelAudioType: "file",
+    //       audioFile: new AudioFile({
+    //         fileName: "ksk.mp3",
+    //         volume: 0.5
+    //       })
+    //     }
+    //   })
+    // );
+
     return factory;
   }
 }
-
-// allPrivateUsers.set(
-//   "351377450007003136",
-//   new PrivateUser({
-//     userId: "351362773407498241",
-//     audio: {
-//       joinedVoiceChannelAudioType: "file",
-//       audioFile: new AudioFile({
-//         fileName: "ksk.mp3",
-//         volume: 0.5
-//       })
-//     }
-//   })
-// );
