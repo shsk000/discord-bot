@@ -1,19 +1,24 @@
-import { ICustomSearch } from "../Services/CustomSearch";
-import { inject, injectable } from "inversify";
+import GoogleCustomSearch, {
+  IGoogleCustomSearch,
+} from "../Repositories/GoogleCustomSearch";
 
 export interface ISearchImagesUsecase {
   search(q: string): Promise<any>;
 }
 
-@injectable()
-export class SearchImagesUsecase implements ISearchImagesUsecase {
-  private readonly service: ICustomSearch;
+class SearchImagesUsecase implements ISearchImagesUsecase {
+  private readonly repository: IGoogleCustomSearch;
 
-  constructor(@inject("ICustomSearch") service: ICustomSearch) {
-    this.service = service;
+  constructor(repository: IGoogleCustomSearch) {
+    this.repository = repository;
   }
 
   async search(q: string) {
-    return await this.service.search(q);
+    return await this.repository.search(q);
   }
 }
+
+export const createSearchImagesUsecase = (): ISearchImagesUsecase => {
+  const repository = new GoogleCustomSearch();
+  return new SearchImagesUsecase(repository);
+};

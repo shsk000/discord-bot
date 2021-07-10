@@ -1,10 +1,9 @@
 import { google } from "googleapis";
-import { injectable } from "inversify";
 
 const customSearch = google.customsearch("v1");
 
 export interface IGoogleCustomSearch {
-  search(q: string, start: number): Promise<any>;
+  search(q: string): Promise<any>;
 }
 
 declare let process: {
@@ -15,12 +14,13 @@ declare let process: {
   };
 };
 
-@injectable()
 class GoogleCustomSearch implements IGoogleCustomSearch {
   static readonly API_KEY = process.env.GOOGLE_API_KEY;
   static readonly CSE_ID = process.env.GOOGLE_CSE_ID;
 
-  public async search(q: string, start: number): Promise<any> {
+  public async search(q: string): Promise<any> {
+    const start = Math.floor(Math.random() * 20);
+
     return await customSearch.cse.list({
       cx: GoogleCustomSearch.CSE_ID,
       q,

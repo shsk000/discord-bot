@@ -1,5 +1,6 @@
 import Discord, { TextChannel } from "discord.js";
-// import ytdl from "ytdl-core";
+import { createOnMessageController } from "./Controller/OnMessage";
+import { DebugChannel } from "./Entities/Channel/DebugChannel";
 
 declare const process: {
   env: {
@@ -9,17 +10,13 @@ declare const process: {
   };
 };
 
-import { OnMessage } from "./Controller/OnMessage";
-import { OnVoiceStateUpdate } from "./Controller/OnVoiceStateUpdate";
-import { DebugChannel } from "./Entities/Channel/DebugChannel";
-
 const client = new Discord.Client();
 
-client.on("ready", () => {
+client.on("ready", async () => {
   // eslint-disable-next-line no-undef
   console.log("ready...");
 
-  const channel = client.channels.get(new DebugChannel().id);
+  const channel = await client.channels.fetch(new DebugChannel().id);
 
   const isTextChannel = (
     textChannel: Discord.Channel
@@ -34,10 +31,7 @@ client.on("ready", () => {
   }
 });
 
-const onMessage = new OnMessage(client);
+const onMessage = createOnMessageController(client);
 onMessage.triggerEventListener();
-
-const onVoiceStateUpdate = new OnVoiceStateUpdate(client);
-onVoiceStateUpdate.triggerEventListener();
 
 client.login(process.env.DISCORD_TOKEN);

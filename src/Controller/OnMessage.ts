@@ -1,18 +1,33 @@
-import { Message } from "discord.js";
-import { IMessageParseUsecase } from "../Usecases/MessageParse";
-import { ISearchImagesUsecase } from "../Usecases/SearchImages";
-
-import container from "../lib/inversify.config";
+import { Client, Message } from "discord.js";
 import { AbstractOnController } from ".";
+import {
+  createMessageParseUsecase,
+  IMessageParseUsecase,
+} from "../Usecases/MessageParse";
+import {
+  createSearchImagesUsecase,
+  ISearchImagesUsecase,
+} from "../Usecases/SearchImages";
 
-export class OnMessage extends AbstractOnController {
+class OnMessage extends AbstractOnController {
+  public messageParseUsecase: IMessageParseUsecase;
+  public searchImagesUsecase: ISearchImagesUsecase;
+
+  constructor(
+    client: Client,
+    messageParseUsecase: IMessageParseUsecase,
+    searchImagesUsecase: ISearchImagesUsecase
+  ) {
+    super(client);
+    this.messageParseUsecase = messageParseUsecase;
+    this.searchImagesUsecase = searchImagesUsecase;
+  }
+
   triggerEventListener(): void {
     this.client.on("message", async (m: Message) => {
       try {
-        const messageParseUsecase = container.get<IMessageParseUsecase>(
-          "IMessageParseUsecase"
-        );
-        const parsed = messageParseUsecase.parsedMessage(m);
+        // split into foundation
+        const parsed = this.messageParseUsecase.parsedMessage(m);
 
         if (parsed.mensionTarget !== "bot-test") return;
 
@@ -22,10 +37,9 @@ export class OnMessage extends AbstractOnController {
         }
 
         if (parsed.command === "img") {
-          const searchImagesUsecase = container.get<ISearchImagesUsecase>(
-            "ISearchImagesUsecase"
+          const result = await this.searchImagesUsecase.search(
+            parsed.messageText
           );
-          const result = await searchImagesUsecase.search(parsed.messageText);
           m.reply(result.data.items[0].link);
         }
       } catch (e) {
@@ -34,3 +48,10 @@ export class OnMessage extends AbstractOnController {
     });
   }
 }
+
+export const createOnMessageController = (client: Client): OnMessage => {
+  const messageParseUsecase = createMessageParseUsecase();
+  const searchImagesUsecase = createSearchImagesUsecase();
+
+  return new OnMessage(client, messageParseUsecase, searchImagesUsecase);
+};
