@@ -7,7 +7,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "tsc": "tsc --locale ja",
-    "start": "npm run tsc && NODE_ENV=development node ./build/app.js",
+    "start": "NODE_ENV=development ts-node ./src/app.ts",
     "start:prd": "NODE_ENV=production node ./build/app.js",
     "lint": "eslint './{lib,src,test}/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './{lib,src,test}/**/*.{ts,tsx}' && prettier --write './{lib,src,test}/**/*.{ts,tsx}'",
@@ -25,16 +25,15 @@
   },
   "homepage": "https://github.com/shsk000/discord-bot#readme",
   "dependencies": {
-    "@types/jest": "^26.0.24",
-    "@types/node": "^16.3.1",
     "discord.js": "^12.5.3",
     "googleapis": "^81.0.0",
-    "node-opus": "^0.3.3",
-    "npm-check-updates": "^11.8.2",
+    "ts-node": "^10.1.0",
     "typescript": "^4.3.5",
     "yargs": "^17.0.1"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.3.1",
     "@types/ws": "^7.4.6",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
@@ -42,6 +41,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.3.6",
     "jest": "^27.0.6",
+    "npm-check-updates": "^11.8.2",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",
     "typescript": "^4.3.5"
