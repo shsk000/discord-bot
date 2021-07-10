@@ -28,7 +28,7 @@ export class UserFactory<
   public getAdminUser(): AdminUser[] {
     const tmp: AdminUser[] = [];
 
-    this.list.forEach(user => {
+    this.list.forEach((user) => {
       if (this.isAdmin(user)) {
         tmp.push(user);
       }

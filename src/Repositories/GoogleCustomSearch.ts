@@ -7,7 +7,7 @@ export interface IGoogleCustomSearch {
   search(q: string, start: number): Promise<any>;
 }
 
-declare var process: {
+declare let process: {
   env: {
     NODE_ENV: string;
     GOOGLE_API_KEY: string;
@@ -28,7 +28,7 @@ class GoogleCustomSearch implements IGoogleCustomSearch {
       searchType: "image",
       safe: "high",
       num: 1,
-      start
+      start,
     });
   }
 }

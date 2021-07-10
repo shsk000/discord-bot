@@ -31,11 +31,11 @@ export class PlayAudioFileUsecase implements IPlayAudioFileUsecase {
     const connection = await channel.join();
 
     const stream = createReadStream(audio.audioFile.getFileFullPath(), {
-      autoClose: true
+      autoClose: true,
     });
 
     const dispatcher = connection.playStream(stream, {
-      volume: audio.audioFile.getVolume()
+      volume: audio.audioFile.getVolume(),
     });
 
     dispatcher.on("end", () => {

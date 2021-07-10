@@ -29,9 +29,9 @@ export class UserFactoryCreater implements IUserFactoryCreater {
         audio: {
           joinedVoiceChannelAudioType: "file",
           audioFile: new AudioFile({
-            fileName: "ksk.mp3"
-          })
-        }
+            fileName: "ksk.mp3",
+          }),
+        },
       })
     );
 
@@ -43,9 +43,9 @@ export class UserFactoryCreater implements IUserFactoryCreater {
           joinedVoiceChannelAudioType: "file",
           audioFile: new AudioFile({
             fileName: "gmks.mp3",
-            volume: 0.5
-          })
-        }
+            volume: 0.5,
+          }),
+        },
       })
     );
 

@@ -16,7 +16,7 @@ const rootDataFilePath = join(__dirname, "../../../src/data");
 
 export class AudioFile implements IAudioFile {
   private fileName: string;
-  private volume: number = 1;
+  private volume = 1;
 
   public constructor(params: IAudioFileConstructorParams) {
     this.fileName = params.fileName;

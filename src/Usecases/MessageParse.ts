@@ -33,7 +33,7 @@ export class MessageParseUsecase implements IMessageParseUsecase {
       mensionTarget,
       command,
       messageText,
-      isInvalidBotOrder
+      isInvalidBotOrder,
     };
   }
 }
