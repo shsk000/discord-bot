@@ -1,22 +1,19 @@
 import Discord, { TextChannel } from "discord.js";
+import { config } from "dotenv";
+import path from "path";
 import { createOnMessageController } from "./Controller/OnMessage";
-import { DebugChannel } from "./Entities/Channel/DebugChannel";
+import { logger } from "./Foundation/logger";
 
-declare const process: {
-  env: {
-    NODE_ENV: string;
-    DISCORD_TOKEN: string;
-    SERVER_ENV: string;
-  };
-};
+config({
+  path: path.resolve("/app/src/Env/.env"),
+});
 
 const client = new Discord.Client();
 
 client.on("ready", async () => {
-  // eslint-disable-next-line no-undef
-  console.log("ready...");
+  logger.debug("ready...");
 
-  const channel = await client.channels.fetch(new DebugChannel().id);
+  const channel = await client.channels.fetch(process.env.DEBUG_CHANNEL_ID);
 
   const isTextChannel = (
     textChannel: Discord.Channel
