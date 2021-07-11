@@ -29,6 +29,7 @@
     "dotenv": "^10.0.0",
     "googleapis": "^81.0.0",
     "log4js": "^6.3.0",
+    "node-fetch": "^2.6.1",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5",
     "yargs": "^17.0.1"
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@types/node": "^16.3.1",
+    "@types/node-fetch": "^2.5.11",
     "@types/ws": "^7.4.6",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",

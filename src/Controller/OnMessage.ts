@@ -1,33 +1,37 @@
 import { Client, Message } from "discord.js";
 import { AbstractOnController } from ".";
+import { logger } from "../Foundation/logger";
 import {
-  createMessageParseUsecase,
-  IMessageParseUsecase,
-} from "../Usecases/MessageParse";
+  createMessageParseService,
+  MessageParseService,
+} from "../Usecases/MessageParseService/MessageParse";
 import {
-  createSearchImagesUsecase,
-  ISearchImagesUsecase,
-} from "../Usecases/SearchImages";
+  createSearchImagesService,
+  SearchImagesService,
+} from "../Usecases/SearchImageService/SearchImages";
+import { createStopValheimServerService } from "../Usecases/Valheim/StopValheimServerService";
 
 class OnMessage extends AbstractOnController {
-  public messageParseUsecase: IMessageParseUsecase;
-  public searchImagesUsecase: ISearchImagesUsecase;
+  public MessageParseService: MessageParseService;
+  public SearchImagesService: SearchImagesService;
 
   constructor(
     client: Client,
-    messageParseUsecase: IMessageParseUsecase,
-    searchImagesUsecase: ISearchImagesUsecase
+    MessageParseService: MessageParseService,
+    SearchImagesService: SearchImagesService
   ) {
     super(client);
-    this.messageParseUsecase = messageParseUsecase;
-    this.searchImagesUsecase = searchImagesUsecase;
+    this.MessageParseService = MessageParseService;
+    this.SearchImagesService = SearchImagesService;
   }
 
   triggerEventListener(): void {
     this.client.on("message", async (m: Message) => {
       try {
         // split into foundation
-        const parsed = this.messageParseUsecase.parsedMessage(m);
+        const parsed = this.MessageParseService.parse(m);
+
+        logger.debug("OnMessage parsed message | ", parsed);
 
         if (parsed.mensionTarget !== "bot-test") return;
 
@@ -37,10 +41,18 @@ class OnMessage extends AbstractOnController {
         }
 
         if (parsed.command === "img") {
-          const result = await this.searchImagesUsecase.search(
+          const result = await this.SearchImagesService.search(
             parsed.messageText
           );
-          m.reply(result.data.items[0].link);
+          m.reply(result);
+        }
+
+        // if (parsed.command === "startValheim") {
+        //   //
+        // }
+
+        if (parsed.command === "stopValheim") {
+          await createStopValheimServerService().execute();
         }
       } catch (e) {
         m.channel.send(e.stack);
@@ -50,8 +62,8 @@ class OnMessage extends AbstractOnController {
 }
 
 export const createOnMessageController = (client: Client): OnMessage => {
-  const messageParseUsecase = createMessageParseUsecase();
-  const searchImagesUsecase = createSearchImagesUsecase();
+  const MessageParseService = createMessageParseService();
+  const SearchImagesService = createSearchImagesService();
 
-  return new OnMessage(client, messageParseUsecase, searchImagesUsecase);
+  return new OnMessage(client, MessageParseService, SearchImagesService);
 };
