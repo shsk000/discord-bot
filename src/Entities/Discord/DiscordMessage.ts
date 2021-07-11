@@ -1,5 +1,4 @@
 import { Message } from "discord.js";
-import { injectable } from "inversify";
 
 export interface IDiscordMessage {
   parse(m: Message): void;
@@ -9,7 +8,6 @@ export interface IDiscordMessage {
   isInvalidBotOrder(): boolean;
 }
 
-@injectable()
 class DiscordMessage implements IDiscordMessage {
   private mensionTarget: string;
   private command: string;
@@ -26,7 +24,9 @@ class DiscordMessage implements IDiscordMessage {
 
     if (!parsed || !(parsed instanceof Array)) return;
 
-    this.mensionTarget = m.mentions.users.first().username;
+    const mensionTargetUsername = m.mentions.users.first()?.username;
+
+    this.mensionTarget = mensionTargetUsername || "";
     this.command = parsed[2] || "";
     this.messageText = parsed[3] || "";
   }

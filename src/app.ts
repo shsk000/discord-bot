@@ -1,25 +1,19 @@
 import Discord, { TextChannel } from "discord.js";
-// import ytdl from "ytdl-core";
+import { config } from "dotenv";
+import path from "path";
+import { createOnMessageController } from "./Controller/OnMessage";
+import { logger } from "./Foundation/logger";
 
-declare const process: {
-  env: {
-    NODE_ENV: string;
-    DISCORD_TOKEN: string;
-    SERVER_ENV: string;
-  };
-};
-
-import { OnMessage } from "./Controller/OnMessage";
-import { OnVoiceStateUpdate } from "./Controller/OnVoiceStateUpdate";
-import { DebugChannel } from "./Entities/Channel/DebugChannel";
+config({
+  path: path.resolve("/app/src/Env/.env"),
+});
 
 const client = new Discord.Client();
 
-client.on("ready", () => {
-  // eslint-disable-next-line no-undef
-  console.log("ready...");
+client.on("ready", async () => {
+  logger.debug("ready...");
 
-  const channel = client.channels.get(new DebugChannel().id);
+  const channel = await client.channels.fetch(process.env.DEBUG_CHANNEL_ID);
 
   const isTextChannel = (
     textChannel: Discord.Channel
@@ -34,10 +28,7 @@ client.on("ready", () => {
   }
 });
 
-const onMessage = new OnMessage(client);
+const onMessage = createOnMessageController(client);
 onMessage.triggerEventListener();
-
-const onVoiceStateUpdate = new OnVoiceStateUpdate(client);
-onVoiceStateUpdate.triggerEventListener();
 
 client.login(process.env.DISCORD_TOKEN);

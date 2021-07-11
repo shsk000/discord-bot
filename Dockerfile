@@ -1,4 +1,4 @@
-FROM node:12.16.0-slim
+FROM node:16.4.2-slim
 
 RUN apt update
 RUN apt -y upgrade
