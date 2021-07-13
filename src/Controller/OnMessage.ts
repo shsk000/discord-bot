@@ -10,6 +10,10 @@ import {
   SearchImagesService,
 } from "../Usecases/SearchImageService/SearchImages";
 import {
+  createFetchServerDetailsService,
+  FetchServerDetailsService,
+} from "../Usecases/Valheim/FetchServerDetailsService";
+import {
   createStartValheimServerService,
   StartValheimServerService,
 } from "../Usecases/Valheim/StartValheimServerService";
@@ -23,19 +27,22 @@ class OnMessage extends AbstractOnController {
   private readonly searchImagesService: SearchImagesService;
   private readonly stopValheimServerService: StopValheimServerService;
   private readonly startValheimServerService: StartValheimServerService;
+  private readonly fetchServerDetailsService: FetchServerDetailsService;
 
   constructor(
     client: Client,
     messageParseService: MessageParseService,
     searchImagesService: SearchImagesService,
     stopValheimServerService: StopValheimServerService,
-    startValheimServerService: StartValheimServerService
+    startValheimServerService: StartValheimServerService,
+    fetchServerDetailsService: FetchServerDetailsService
   ) {
     super(client);
     this.messageParseService = messageParseService;
     this.searchImagesService = searchImagesService;
     this.stopValheimServerService = stopValheimServerService;
     this.startValheimServerService = startValheimServerService;
+    this.fetchServerDetailsService = fetchServerDetailsService;
   }
 
   triggerEventListener(): void {
@@ -60,10 +67,7 @@ class OnMessage extends AbstractOnController {
           m.reply(result);
         }
 
-        if (
-          parsed.command === "valheimServer" &&
-          parsed.messageText === "stop"
-        ) {
+        if (parsed.command === "server" && parsed.messageText === "stop") {
           const { result } = await this.stopValheimServerService.execute();
           if (result) {
             m.reply("Server has been shut down.");
@@ -72,10 +76,7 @@ class OnMessage extends AbstractOnController {
           }
         }
 
-        if (
-          parsed.command === "valheimServer" &&
-          parsed.messageText === "start"
-        ) {
+        if (parsed.command === "server" && parsed.messageText === "start") {
           const { result } = await this.startValheimServerService.execute();
 
           if (result) {
@@ -83,6 +84,12 @@ class OnMessage extends AbstractOnController {
           } else {
             m.reply("Server failed to start.");
           }
+        }
+
+        if (parsed.command === "server" && parsed.messageText === "details") {
+          const details = await this.fetchServerDetailsService.execute();
+
+          m.reply(JSON.stringify(details.server));
         }
       } catch (e) {
         logger.error("OnMessage catch error | ", e);
@@ -100,12 +107,14 @@ export const createOnMessageController = (client: Client): OnMessage => {
   const searchImagesService = createSearchImagesService();
   const stopValheimServerService = createStopValheimServerService();
   const startValheimServerService = createStartValheimServerService();
+  const fetchServerDetailsService = createFetchServerDetailsService();
 
   return new OnMessage(
     client,
     messageParseService,
     searchImagesService,
     stopValheimServerService,
-    startValheimServerService
+    startValheimServerService,
+    fetchServerDetailsService
   );
 };

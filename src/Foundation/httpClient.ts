@@ -11,7 +11,7 @@ type HttpClientRequestParams = {
 export const httpClient = async <T extends Record<string, any>>(
   params: HttpClientRequestParams
 ): Promise<T> => {
-  const body = params.body ? JSON.stringify(params.body) : "";
+  const body = params.body ? JSON.stringify(params.body) : undefined;
 
   logger.debug("HttpClient params | ", params);
 
