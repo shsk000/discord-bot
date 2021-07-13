@@ -9,5 +9,6 @@ declare namespace NodeJS {
     readonly CONOHA_AUTH_USERNAME: string;
     readonly CONOHA_AUTH_PASSWORD: string;
     readonly CONOHA_AUTH_TENANT_ID: string;
+    readonly CONOHA_SERVER_ID: string;
   }
 }

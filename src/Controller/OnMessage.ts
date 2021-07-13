@@ -9,27 +9,40 @@ import {
   createSearchImagesService,
   SearchImagesService,
 } from "../Usecases/SearchImageService/SearchImages";
-import { createStopValheimServerService } from "../Usecases/Valheim/StopValheimServerService";
+import {
+  createStartValheimServerService,
+  StartValheimServerService,
+} from "../Usecases/Valheim/StartValheimServerService";
+import {
+  createStopValheimServerService,
+  StopValheimServerService,
+} from "../Usecases/Valheim/StopValheimServerService";
 
 class OnMessage extends AbstractOnController {
-  public MessageParseService: MessageParseService;
-  public SearchImagesService: SearchImagesService;
+  private readonly messageParseService: MessageParseService;
+  private readonly searchImagesService: SearchImagesService;
+  private readonly stopValheimServerService: StopValheimServerService;
+  private readonly startValheimServerService: StartValheimServerService;
 
   constructor(
     client: Client,
-    MessageParseService: MessageParseService,
-    SearchImagesService: SearchImagesService
+    messageParseService: MessageParseService,
+    searchImagesService: SearchImagesService,
+    stopValheimServerService: StopValheimServerService,
+    startValheimServerService: StartValheimServerService
   ) {
     super(client);
-    this.MessageParseService = MessageParseService;
-    this.SearchImagesService = SearchImagesService;
+    this.messageParseService = messageParseService;
+    this.searchImagesService = searchImagesService;
+    this.stopValheimServerService = stopValheimServerService;
+    this.startValheimServerService = startValheimServerService;
   }
 
   triggerEventListener(): void {
     this.client.on("message", async (m: Message) => {
       try {
         // split into foundation
-        const parsed = this.MessageParseService.parse(m);
+        const parsed = this.messageParseService.parse(m);
 
         logger.debug("OnMessage parsed message | ", parsed);
 
@@ -41,29 +54,58 @@ class OnMessage extends AbstractOnController {
         }
 
         if (parsed.command === "img") {
-          const result = await this.SearchImagesService.search(
+          const result = await this.searchImagesService.search(
             parsed.messageText
           );
           m.reply(result);
         }
 
-        // if (parsed.command === "startValheim") {
-        //   //
-        // }
+        if (
+          parsed.command === "valheimServer" &&
+          parsed.messageText === "stop"
+        ) {
+          const { result } = await this.stopValheimServerService.execute();
+          if (result) {
+            m.reply("Server has been shut down.");
+          } else {
+            m.reply("Server shut down process failed.");
+          }
+        }
 
-        if (parsed.command === "stopValheim") {
-          await createStopValheimServerService().execute();
+        if (
+          parsed.command === "valheimServer" &&
+          parsed.messageText === "start"
+        ) {
+          const { result } = await this.startValheimServerService.execute();
+
+          if (result) {
+            m.reply("Server is up and running.");
+          } else {
+            m.reply("Server failed to start.");
+          }
         }
       } catch (e) {
-        m.channel.send(e.stack);
+        logger.error("OnMessage catch error | ", e);
+        if (e instanceof Error) {
+          const errorMessage = `${e.name}\n${e.message}\n${e.stack}`;
+          m.channel.send(errorMessage);
+        }
       }
     });
   }
 }
 
 export const createOnMessageController = (client: Client): OnMessage => {
-  const MessageParseService = createMessageParseService();
-  const SearchImagesService = createSearchImagesService();
+  const messageParseService = createMessageParseService();
+  const searchImagesService = createSearchImagesService();
+  const stopValheimServerService = createStopValheimServerService();
+  const startValheimServerService = createStartValheimServerService();
 
-  return new OnMessage(client, MessageParseService, SearchImagesService);
+  return new OnMessage(
+    client,
+    messageParseService,
+    searchImagesService,
+    stopValheimServerService,
+    startValheimServerService
+  );
 };

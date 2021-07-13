@@ -1,23 +1,38 @@
+import { FetchAccessTokenRepository } from "../../Entities/Conoha/FetchAccessTokenRepository";
+import { StopServerRepository } from "../../Entities/Conoha/StopServerRepository";
 import { createFetchAccessTokenRepositoryImpl } from "../../Repositories/Conoha/FetchAccessTokenRepositoryImpl";
+import { createStopServerRepositoryImpl } from "../../Repositories/Conoha/StopServerRepositoryImpl";
 import { StopServerOutput } from "./StopServerOutput";
 
-interface StopValheimServerService {
+export interface StopValheimServerService {
   execute(): Promise<StopServerOutput>;
 }
 
 class StopValheimServerServiceImpl implements StopValheimServerService {
-  public async execute(): Promise<StopServerOutput> {
-    const impl = createFetchAccessTokenRepositoryImpl();
-    await impl.fetch();
+  private readonly fetchAccessTokenRepositoryImpl: FetchAccessTokenRepository;
+  private readonly stopServerRepositoryImpl: StopServerRepository;
 
-    return new Promise((resolve) => {
-      resolve({
-        result: true,
-      });
-    });
+  constructor(
+    fetchAccessTokenRepositoryImpl: FetchAccessTokenRepository,
+    stopServerRepositoryImpl: StopServerRepository
+  ) {
+    this.fetchAccessTokenRepositoryImpl = fetchAccessTokenRepositoryImpl;
+    this.stopServerRepositoryImpl = stopServerRepositoryImpl;
+  }
+
+  public async execute(): Promise<StopServerOutput> {
+    const accessToken = await this.fetchAccessTokenRepositoryImpl.fetch();
+    const result = await this.stopServerRepositoryImpl.execute(accessToken);
+
+    return {
+      result: result,
+    };
   }
 }
 
 export const createStopValheimServerService = (): StopValheimServerService => {
-  return new StopValheimServerServiceImpl();
+  return new StopValheimServerServiceImpl(
+    createFetchAccessTokenRepositoryImpl(),
+    createStopServerRepositoryImpl()
+  );
 };

@@ -5,6 +5,7 @@ type HttpClientRequestParams = {
   method: "GET" | "POST";
   url: string;
   body?: Record<string, any>;
+  headers?: Record<string, any>;
 };
 
 export const httpClient = async <T extends Record<string, any>>(
@@ -12,31 +13,44 @@ export const httpClient = async <T extends Record<string, any>>(
 ): Promise<T> => {
   const body = params.body ? JSON.stringify(params.body) : "";
 
-  logger.debug("HttpClient settings | ", params);
+  logger.debug("HttpClient params | ", params);
 
   const response = await fetch(params.url, {
     method: params.method,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      ...params.headers,
     },
     body: body,
   });
 
   if (!response.ok) {
-    const errorResponseText = await response.text();
+    const errorTextResponse = await response.json();
     logger.error(
       "HttpClient error response | ",
       response.status,
-      errorResponseText,
+      errorTextResponse,
       response.headers
     );
-    throw errorResponseText;
+
+    if (errorTextResponse.conflictingRequest) {
+      throw new Error(errorTextResponse.conflictingRequest.message);
+    }
+
+    throw errorTextResponse;
   }
 
-  const parsedData = await response.json();
+  logger.debug("HttpClient success response", response);
 
-  logger.debug("HttpClient success response | ", parsedData);
-
-  return parsedData as T;
+  try {
+    const parsedJsonResponse = (await response.json()) as T;
+    logger.debug("HttpClient success json response | ", parsedJsonResponse);
+    return parsedJsonResponse;
+  } catch (e) {
+    logger.debug("HttpClient success status response | ", response.status);
+    return {
+      status: response.status,
+    } as unknown as T;
+  }
 };
