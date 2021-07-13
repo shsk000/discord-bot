@@ -8,7 +8,7 @@
     "test:watch": "jest --watch",
     "tsc": "tsc --locale ja",
     "start": "NODE_ENV=development ts-node ./src/app.ts",
-    "start:prd": "NODE_ENV=production node ./build/app.js",
+    "start:prd": "NODE_ENV=production ts-node ./src/app.ts",
     "nodemon": "NODE_ENV=development nodemon",
     "lint": "eslint './{lib,src,test}/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './{lib,src,test}/**/*.{ts,tsx}' && prettier --write './{lib,src,test}/**/*.{ts,tsx}'",
