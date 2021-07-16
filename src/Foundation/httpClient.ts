@@ -45,10 +45,13 @@ export const httpClient = async <T extends Record<string, any>>(
 
   try {
     const parsedJsonResponse = (await response.json()) as T;
-    logger.debug("HttpClient success json response | ", parsedJsonResponse);
+    logger.info(
+      "HttpClient success json response | ",
+      JSON.stringify(parsedJsonResponse)
+    );
     return parsedJsonResponse;
   } catch (e) {
-    logger.debug("HttpClient success status response | ", response.status);
+    logger.info("HttpClient success status response | ", response.status);
     return {
       status: response.status,
     } as unknown as T;

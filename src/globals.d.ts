@@ -5,6 +5,9 @@ declare namespace NodeJS {
     readonly GOOGLE_API_KEY: string;
     readonly GOOGLE_CSE_ID: string;
 
+    // Discord
+    readonly DISCORD_OWN_BOT_NAME: string;
+
     // Conoha API
     readonly CONOHA_AUTH_USERNAME: string;
     readonly CONOHA_AUTH_PASSWORD: string;

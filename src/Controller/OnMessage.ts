@@ -48,26 +48,25 @@ class OnMessage extends AbstractOnController {
   triggerEventListener(): void {
     this.client.on("message", async (m: Message) => {
       try {
-        // split into foundation
-        const parsed = this.messageParseService.parse(m);
+        const message = this.messageParseService.parse(m);
 
-        logger.debug("OnMessage parsed message | ", parsed);
+        logger.debug("OnMessage parsed message | ", message);
 
-        if (parsed.mensionTarget !== "bot-test") return;
+        if (message.mensionTarget !== process.env.DISCORD_OWN_BOT_NAME) return;
 
-        if (parsed.isInvalidBotOrder) {
+        if (message.isInvalidBotOrder) {
           m.channel.send("invalid command arguments");
           return;
         }
 
-        if (parsed.command === "img") {
+        if (message.command === "img") {
           const result = await this.searchImagesService.search(
-            parsed.messageText
+            message.messageText
           );
           m.reply(result);
         }
 
-        if (parsed.command === "server" && parsed.messageText === "stop") {
+        if (message.command === "server" && message.messageText === "stop") {
           const { result } = await this.stopValheimServerService.execute();
           if (result) {
             m.reply("Server has been shut down.");
@@ -76,7 +75,7 @@ class OnMessage extends AbstractOnController {
           }
         }
 
-        if (parsed.command === "server" && parsed.messageText === "start") {
+        if (message.command === "server" && message.messageText === "start") {
           const { result } = await this.startValheimServerService.execute();
 
           if (result) {
@@ -86,7 +85,7 @@ class OnMessage extends AbstractOnController {
           }
         }
 
-        if (parsed.command === "server" && parsed.messageText === "details") {
+        if (message.command === "server" && message.messageText === "details") {
           const details = await this.fetchServerDetailsService.execute();
 
           m.reply(JSON.stringify(details.server));

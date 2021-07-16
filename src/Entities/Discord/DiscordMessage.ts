@@ -1,14 +1,6 @@
 import { Message } from "discord.js";
 
-export interface IDiscordMessage {
-  parse(m: Message): void;
-  getMensitionTarget(): string;
-  getCommand(): string;
-  getMessageText(): string;
-  isInvalidBotOrder(): boolean;
-}
-
-class DiscordMessage implements IDiscordMessage {
+class DiscordMessage {
   private mensionTarget: string;
   private command: string;
   private messageText: string;

@@ -9,7 +9,6 @@ export interface MessageParseService {
 class MessageParseServiceImpl implements MessageParseService {
   public parse(m: Message): ParsedMessageOutput {
     const discordMessage = new DiscordMessage();
-
     discordMessage.parse(m);
 
     const mensionTarget = discordMessage.getMensitionTarget();

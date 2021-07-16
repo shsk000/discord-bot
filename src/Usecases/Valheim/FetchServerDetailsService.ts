@@ -30,6 +30,7 @@ class FetchServerDetailsServiceImpl implements FetchServerDetailsService {
       return {
         instanceName: value.getInstanceName(),
         vmState: value.getVmState(),
+        addresse: value.getIPv4Address(),
       };
     });
 

@@ -12,7 +12,6 @@ const client = new Discord.Client();
 
 client.on("ready", async () => {
   logger.debug("ready...");
-  logger.info(process.env);
 
   const channel = await client.channels.fetch(process.env.DEBUG_CHANNEL_ID);
 

@@ -8,6 +8,12 @@ type APIResponseServerDetails = {
   servers: {
     "OS-EXT-SRV-ATTR:instance_name": string;
     "OS-EXT-STS:vm_state": string;
+    addresses: {
+      [key: string]: {
+        version: number;
+        addr: string;
+      }[];
+    };
   }[];
 };
 
@@ -30,6 +36,7 @@ class FetchServerDetailsRepositoryImpl implements FetchServerDetailsRepository {
       return new ServerDetails({
         instanceName: value["OS-EXT-SRV-ATTR:instance_name"],
         vmState: value["OS-EXT-STS:vm_state"],
+        addresses: value["addresses"],
       });
     });
   }
