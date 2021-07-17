@@ -1,5 +1,6 @@
 import { Client, Message } from "discord.js";
 import { AbstractOnController } from ".";
+import { isTextChannel } from "../Foundation/isTextChannel";
 import { logger } from "../Foundation/logger";
 import {
   createMessageParseService,
@@ -93,8 +94,14 @@ class OnMessage extends AbstractOnController {
       } catch (e) {
         logger.error("OnMessage catch error | ", e);
         if (e instanceof Error) {
+          const debugChannel = await this.client.channels.fetch(
+            process.env.DEBUG_CHANNEL_ID
+          );
           const errorMessage = `${e.name}\n${e.message}\n${e.stack}`;
-          m.channel.send(errorMessage);
+
+          if (debugChannel && isTextChannel(debugChannel)) {
+            debugChannel.send(errorMessage);
+          }
         }
       }
     });

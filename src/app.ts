@@ -1,7 +1,8 @@
-import Discord, { TextChannel } from "discord.js";
+import Discord from "discord.js";
 import { config } from "dotenv";
 import path from "path";
 import { createOnMessageController } from "./Controller/OnMessage";
+import { isTextChannel } from "./Foundation/isTextChannel";
 import { logger } from "./Foundation/logger";
 
 config({
@@ -14,12 +15,6 @@ client.on("ready", async () => {
   logger.debug("ready...");
 
   const channel = await client.channels.fetch(process.env.DEBUG_CHANNEL_ID);
-
-  const isTextChannel = (
-    textChannel: Discord.Channel
-  ): textChannel is TextChannel => {
-    return textChannel.type === "text";
-  };
 
   if (channel && isTextChannel(channel)) {
     channel.send(
