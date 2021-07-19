@@ -56,7 +56,7 @@ class OnMessage extends AbstractOnController {
         if (message.mensionTarget !== process.env.DISCORD_OWN_BOT_NAME) return;
 
         if (message.isInvalidBotOrder) {
-          m.channel.send("invalid command arguments");
+          await m.channel.send("invalid command arguments");
           return;
         }
 
@@ -64,15 +64,15 @@ class OnMessage extends AbstractOnController {
           const result = await this.searchImagesService.search(
             message.messageText
           );
-          m.reply(result);
+          await m.reply(result);
         }
 
         if (message.command === "server" && message.messageText === "stop") {
           const { result } = await this.stopValheimServerService.execute();
           if (result) {
-            m.reply("Server has been shut down.");
+            await m.reply("Server has been shut down.");
           } else {
-            m.reply("Server shut down process failed.");
+            await m.reply("Server shut down process failed.");
           }
         }
 
@@ -80,16 +80,15 @@ class OnMessage extends AbstractOnController {
           const { result } = await this.startValheimServerService.execute();
 
           if (result) {
-            m.reply("Server is up and running.");
+            await m.reply("Server is up and running.");
           } else {
-            m.reply("Server failed to start.");
+            await m.reply("Server failed to start.");
           }
         }
 
         if (message.command === "server" && message.messageText === "details") {
           const details = await this.fetchServerDetailsService.execute();
-
-          m.reply(JSON.stringify(details.server));
+          await m.reply(JSON.stringify(details.server));
         }
       } catch (e) {
         logger.error("OnMessage catch error | ", e);
@@ -97,10 +96,10 @@ class OnMessage extends AbstractOnController {
           const debugChannel = await this.client.channels.fetch(
             process.env.DEBUG_CHANNEL_ID
           );
-          const errorMessage = `${e.name}\n${e.message}\n${e.stack}`;
+          const errorMessage = `ErrorName: ${e.name}\nMessage: ${e.message}\nStack:\n${e.stack}`;
 
           if (debugChannel && isTextChannel(debugChannel)) {
-            debugChannel.send(errorMessage);
+            await debugChannel.send(errorMessage);
           }
         }
       }
