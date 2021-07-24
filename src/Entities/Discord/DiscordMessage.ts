@@ -1,30 +1,21 @@
 import { Message } from "discord.js";
 
 class DiscordMessage {
-  private mensionTarget: string;
   private command: string;
   private messageText: string;
 
   constructor() {
-    this.mensionTarget = "";
     this.command = "";
     this.messageText = "";
   }
 
   public parse(m: Message): void {
-    const parsed = m.content.match(/^(<@!?\d+>)\s?([^\s]*)\s?(.*)?/);
+    const parsed = m.content.match(/^==([^\s]*)\s?([^\s]*)\s?(.*)?/);
 
     if (!parsed || !(parsed instanceof Array)) return;
 
-    const mensionTargetUsername = m.mentions.users.first()?.username;
-
-    this.mensionTarget = mensionTargetUsername || "";
-    this.command = parsed[2] || "";
-    this.messageText = parsed[3] || "";
-  }
-
-  public getMensitionTarget(): string {
-    return this.mensionTarget;
+    this.command = parsed[1] || "";
+    this.messageText = parsed[2] || "";
   }
 
   public getCommand(): string {
@@ -36,11 +27,7 @@ class DiscordMessage {
   }
 
   public isInvalidBotOrder(): boolean {
-    return (
-      this.mensionTarget.length === 0 ||
-      this.command.length === 0 ||
-      this.messageText.length === 0
-    );
+    return this.command.length === 0 || this.messageText.length === 0;
   }
 }
 

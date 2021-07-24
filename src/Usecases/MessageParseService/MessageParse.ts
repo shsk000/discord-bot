@@ -11,13 +11,11 @@ class MessageParseServiceImpl implements MessageParseService {
     const discordMessage = new DiscordMessage();
     discordMessage.parse(m);
 
-    const mensionTarget = discordMessage.getMensitionTarget();
     const command = discordMessage.getCommand();
     const messageText = discordMessage.getMessageText();
     const isInvalidBotOrder = discordMessage.isInvalidBotOrder();
 
     return {
-      mensionTarget,
       command,
       messageText,
       isInvalidBotOrder,

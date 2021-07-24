@@ -53,10 +53,7 @@ class OnMessage extends AbstractOnController {
 
         logger.debug("OnMessage parsed message | ", message);
 
-        if (message.mensionTarget !== process.env.DISCORD_OWN_BOT_NAME) return;
-
         if (message.isInvalidBotOrder) {
-          await m.channel.send("invalid command arguments");
           return;
         }
 
